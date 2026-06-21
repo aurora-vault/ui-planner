@@ -1,0 +1,133 @@
+@import url("https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;700&family=Sora:wght@400;600;700&display=swap");
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  font-family: "Noto Sans SC", "Segoe UI", sans-serif;
+  line-height: 1.5;
+  font-weight: 400;
+
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  color: #eafff5;
+  background: #05060f;
+}
+
+body {
+  margin: 0;
+  min-width: 320px;
+  min-height: 100vh;
+  background: #05060f;
+}
+
+#root {
+  min-height: 100vh;
+}
+
+button,
+input,
+select,
+textarea {
+  font: inherit;
+}
+
+.font-title {
+  font-family: "Sora", "Noto Sans SC", sans-serif;
+}
+
+/* 极光背景：固定铺满视口的两层径向光晕（绿/青、靛/紫），缓慢漂移交叠，
+   形成流动的北极光帷幕。pointer-events-none 不挡交互；放在最底层 z 轴。
+   prefers-reduced-motion 时停止动画，只保留静态光晕，尊重无障碍偏好。 */
+.aurora-backdrop {
+  position: fixed;
+  inset: -20%;
+  z-index: 0;
+  pointer-events: none;
+  background:
+    radial-gradient(
+      45% 38% at 22% 18%,
+      rgba(52, 240, 168, 0.32) 0%,
+      transparent 70%
+    ),
+    radial-gradient(
+      42% 40% at 78% 26%,
+      rgba(56, 189, 248, 0.26) 0%,
+      transparent 72%
+    ),
+    radial-gradient(
+      50% 45% at 60% 82%,
+      rgba(167, 139, 250, 0.24) 0%,
+      transparent 75%
+    );
+  filter: blur(40px) saturate(125%);
+  animation: aurora-drift 22s ease-in-out infinite;
+}
+
+.aurora-backdrop::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(
+      38% 34% at 82% 70%,
+      rgba(45, 212, 191, 0.22) 0%,
+      transparent 72%
+    ),
+    radial-gradient(
+      40% 36% at 12% 78%,
+      rgba(129, 140, 248, 0.2) 0%,
+      transparent 74%
+    );
+  filter: blur(30px);
+  animation: aurora-drift 28s ease-in-out infinite reverse;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .aurora-backdrop,
+  .aurora-backdrop::after {
+    animation: none;
+  }
+}
+
+.panel-input {
+  @apply h-11 w-full rounded-2xl border border-white/10 bg-night-950/55 px-4 text-sm text-white outline-none transition focus:border-aurora-green/55 focus:ring-2 focus:ring-aurora-green/20;
+}
+
+.panel-textarea {
+  @apply min-h-[132px] w-full rounded-2xl border border-white/10 bg-night-950/55 px-4 py-3 text-sm leading-7 text-white outline-none transition focus:border-aurora-green/55 focus:ring-2 focus:ring-aurora-green/20;
+}
+
+.inspector-action {
+  @apply inline-flex h-11 items-center justify-center gap-2 rounded-2xl border border-white/10 bg-white/5 px-4 text-sm text-slate-200 transition hover:border-aurora-green/40 hover:bg-aurora-green/10;
+}
+
+.preview-action {
+  @apply inline-flex h-9 items-center gap-2 rounded-full border border-white/10 bg-white/5 px-3 text-xs text-slate-200 transition hover:border-aurora-green/40 hover:bg-aurora-green/10;
+}
+
+/* 细滚动条：用于左侧图层栏等内部滚动容器，避免系统默认粗滚动条破坏暗色面板观感。
+   悬停时滑块染上极光绿，与整体主题呼应。 */
+.thin-scrollbar {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(148, 163, 184, 0.35) transparent;
+}
+.thin-scrollbar::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+.thin-scrollbar::-webkit-scrollbar-track {
+  background: transparent;
+}
+.thin-scrollbar::-webkit-scrollbar-thumb {
+  background-color: rgba(148, 163, 184, 0.28);
+  border-radius: 9999px;
+  border: 2px solid transparent;
+  background-clip: padding-box;
+}
+.thin-scrollbar::-webkit-scrollbar-thumb:hover {
+  background-color: rgba(52, 240, 168, 0.5);
+}

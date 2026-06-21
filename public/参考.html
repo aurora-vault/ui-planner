@@ -1,0 +1,296 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>参考 - UI 模板建议稿</title>
+    <style>
+:root {
+  color-scheme: dark;
+  --page-bg: #09111f;
+  --panel-bg: rgba(10, 18, 33, 0.82);
+  --panel-border: rgba(255, 255, 255, 0.12);
+  --text-strong: #f8fbff;
+  --text-soft: #91a4c2;
+}
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  min-height: 100vh;
+  font-family: 'Noto Sans SC', 'Segoe UI', sans-serif;
+  background:
+    radial-gradient(circle at top, rgba(76, 201, 240, 0.18), transparent 24%),
+    linear-gradient(180deg, #09111f 0%, #050a14 100%);
+  color: var(--text-strong);
+}
+.ui-template {
+  display: grid;
+  place-items: center;
+  min-height: 100vh;
+  padding: 40px;
+}
+.ui-template__canvas {
+  position: relative; width: 1440px; height: 960px;
+  border-radius: 28px;
+  border: 1px solid var(--panel-border);
+  background:
+    linear-gradient(rgba(255,255,255,0.04) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,0.04) 1px, transparent 1px),
+    var(--panel-bg);
+  background-size: 40px 40px, 40px 40px, cover;
+  overflow: hidden;
+}
+.ui-block {
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 16px;
+  border-radius: 20px;
+  border: 1px solid color-mix(in srgb, var(--block-accent) 45%, white 18%);
+  background: color-mix(in srgb, var(--block-accent) 12%, rgba(10, 18, 33, 0.88));
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.24);
+  overflow: hidden;
+}
+.ui-block__eyebrow {
+  font-size: 12px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--text-soft);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  flex: 0 0 auto;
+}
+.ui-block__copy {
+  font-size: 14px;
+  line-height: 1.7;
+  color: var(--text-strong);
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 4;
+  line-clamp: 4;
+  overflow: hidden;
+  min-height: 0;
+}
+    </style>
+  </head>
+  <body>
+<!--
+  ============================================================
+  参考 — UI 布局设计说明（DESIGN BRIEF）
+  ============================================================
+  这是一份「UI 规划稿」，描述各区域应有的位置、尺寸和用途。
+  阅读建议：先读本说明建立整体布局认知，再看下方 DOM 与 CSS 还原细节。
+  坐标系：画布左上角为原点 (0,0)，单位 px。缩进表示分组嵌套（子区域属于上一级父区域）。
+
+  画布尺寸：1440 × 960 px
+  区域总数：15
+
+  区域清单：
+    1. 导航栏  <div>  —  顶部横向通栏（宽 99% / 高 14%）
+        用途：用于配置统计信息
+    2. logo  <div>  —  顶部左侧（宽 17% / 高 8%）
+          用途：logo或者本ui面板本身的固定标题之类的地方
+    3. 页面标题  <div>  —  顶部（宽 20% / 高 8%）
+          用途：导出时就按照这里的名字导出,新增下拉功能填入更多描述,写给ai看的
+    4. 复制代码  <div>  —  顶部右侧（宽 12% / 高 8%）
+          用途：直接复制html代码,用于快速获取
+    5. 导出html  <div>  —  顶部右侧（宽 12% / 高 8%）
+          用途：如果有其他导出建议,图片等 可以设置一个小下拉按钮选择性导出其他内容
+    6. 左侧栏  <div>  —  左侧纵向通栏（宽 10% / 高 85%）
+        用途：用于图层管理
+    7. 导入  <div>  —  顶部左侧（宽 5% / 高 5%）
+          用途：用于随时导入已导出的配置文件随时复写 如果此项功能会导致导出的成品变臃肿脱离原本让ai易读的初衷,则在右侧新增一个保存按钮用于区别配置文件和最终成品,也可在右侧新增下拉框,让用户可以随时启用自己不同的画布项目进度
+    8. 新增模块按钮  <div>  —  顶部左侧（宽 4% / 高 5%）
+          用途：新增模块按钮
+    9. 模块示例1  <div>  —  顶部左侧（宽 10% / 高 9%）
+          用途：被新增的模块预览,显示/锁定/复制/删除等按钮简约用图标显示就好不需要文本说明,模块需要可以被拖拽设置图层高度,
+    10. 分组功能示例模块-左侧栏  <div>  —  左侧（宽 10% / 高 8%）
+          用途：需要新增分组嵌套功能,例如此模块既左侧栏模块,左侧栏模块做为一个父模块可以嵌套其他子模块,实现分组效果,如此一来当左侧栏嵌套过多子模块后可以设定一个下拉箭头按钮,展开收起子模块,当然子模块中也可以存在第二个父子嵌套关系,可以层层递进,子模块可显示嵌套路径来更直观感受
+    11. 子模块示例  <div>  —  左侧（宽 10% / 高 7%）
+          用途：此模块做为子模块示例,可以被嵌套在左侧栏之内,实现分组效果,模块示例1提到的拖拽功能最好能和分组效果合并,如edge的分组效果类似,拖进来就是子模块,拖出去就是父模块的兄弟模块,两个兄弟模块拖拽过程中重合既合并为父子模块,被拖拽模块自动为子模块,
+    12. 画布  <div>  —  中侧纵向通栏（宽 78% / 高 86%）
+        用途：用于内容规划
+    13. 悬浮快捷工具栏  <div>  —  底部（宽 77% / 高 8%）
+        用途：悬浮快捷工具栏
+    14. 右侧边栏  <div>  —  右侧（宽 11% / 高 84%）
+        用途：模块属性编辑区,设置模块名称和描述等详细信息置顶或置底功能取消,右侧栏的显示顺序拖拽需要融合层级功能
+    15. 实时预览模块  <div>  —  底部右侧（宽 11% / 高 13%）
+          用途：统计,尺寸,体积等 然后直接显示预览,不需要复制代码和下载文件按钮,这个功能在顶部导航栏显示即可
+  ============================================================
+-->
+<main class="ui-template" aria-label="参考">
+  <div class="ui-template__canvas">
+  <!-- [区域 1] 导航栏 · <div> · 顶部横向通栏 · 占画布宽 99% 高 14% · 含 4 个子区域
+       用途：用于配置统计信息 -->
+  <div
+    class="ui-block block-1"
+    data-name="导航栏"
+    data-region="顶部横向通栏"
+    style="left:2px;top:3px;width:1428px;height:132px;--block-accent:#62c421;"
+  >
+    <div class="ui-block__eyebrow">导航栏</div>
+    <div class="ui-block__copy">用于配置统计信息</div>
+    <!-- [区域 2] logo · <div> · 顶部左侧 · 占画布宽 17% 高 8%
+         用途：logo或者本ui面板本身的固定标题之类的地方 -->
+    <div
+      class="ui-block block-2"
+      data-name="logo"
+      data-region="顶部左侧"
+      style="left:34px;top:22px;width:244px;height:76px;--block-accent:#22c55e;"
+    >
+      <div class="ui-block__eyebrow">logo</div>
+      <div class="ui-block__copy">logo或者本ui面板本身的固定标题之类的地方</div>
+    </div>
+    <!-- [区域 3] 页面标题 · <div> · 顶部 · 占画布宽 20% 高 8%
+         用途：导出时就按照这里的名字导出,新增下拉功能填入更多描述,写给ai看的 -->
+    <div
+      class="ui-block block-3"
+      data-name="页面标题"
+      data-region="顶部"
+      style="left:588px;top:22px;width:282px;height:76px;--block-accent:#22c55e;"
+    >
+      <div class="ui-block__eyebrow">页面标题</div>
+      <div class="ui-block__copy">导出时就按照这里的名字导出,新增下拉功能填入更多描述,写给ai看的</div>
+    </div>
+    <!-- [区域 4] 复制代码 · <div> · 顶部右侧 · 占画布宽 12% 高 8%
+         用途：直接复制html代码,用于快速获取 -->
+    <div
+      class="ui-block block-4"
+      data-name="复制代码"
+      data-region="顶部右侧"
+      style="left:1055px;top:25px;width:170px;height:76px;--block-accent:#22c55e;"
+    >
+      <div class="ui-block__eyebrow">复制代码</div>
+      <div class="ui-block__copy">直接复制html代码,用于快速获取</div>
+    </div>
+    <!-- [区域 5] 导出html · <div> · 顶部右侧 · 占画布宽 12% 高 8%
+         用途：如果有其他导出建议,图片等 可以设置一个小下拉按钮选择性导出其他内容 -->
+    <div
+      class="ui-block block-5"
+      data-name="导出html"
+      data-region="顶部右侧"
+      style="left:1238px;top:24px;width:170px;height:76px;--block-accent:#22c55e;"
+    >
+      <div class="ui-block__eyebrow">导出html</div>
+      <div class="ui-block__copy">如果有其他导出建议,图片等
+可以设置一个小下拉按钮选择性导出其他内容</div>
+    </div>
+  </div>
+  <!-- [区域 6] 左侧栏 · <div> · 左侧纵向通栏 · 占画布宽 10% 高 85% · 含 5 个子区域
+       用途：用于图层管理 -->
+  <div
+    class="ui-block block-6"
+    data-name="左侧栏"
+    data-region="左侧纵向通栏"
+    style="left:3px;top:134px;width:148px;height:818px;--block-accent:#22c55e;"
+  >
+    <div class="ui-block__eyebrow">左侧栏</div>
+    <div class="ui-block__copy">用于图层管理</div>
+    <!-- [区域 7] 导入 · <div> · 顶部左侧 · 占画布宽 5% 高 5%
+         用途：用于随时导入已导出的配置文件随时复写 如果此项功能会导致导出的成品变臃肿脱离原本让ai易读的初衷,则在右侧新增一个保存按钮用于区别配置文件和最终成品,也可在右侧新增下拉框,让用户可以随时启用自己不同的画布项目进度 -->
+    <div
+      class="ui-block block-7"
+      data-name="导入"
+      data-region="顶部左侧"
+      style="left:-1px;top:10px;width:68px;height:49px;--block-accent:#22c55e;"
+    >
+      <div class="ui-block__eyebrow">导入</div>
+      <div class="ui-block__copy">用于随时导入已导出的配置文件随时复写
+如果此项功能会导致导出的成品变臃肿脱离原本让ai易读的初衷,则在右侧新增一个保存按钮用于区别配置文件和最终成品,也可在右侧新增下拉框,让用户可以随时启用自己不同的画布项目进度</div>
+    </div>
+    <!-- [区域 8] 新增模块按钮 · <div> · 顶部左侧 · 占画布宽 4% 高 5%
+         用途：新增模块按钮 -->
+    <div
+      class="ui-block block-8"
+      data-name="新增模块按钮"
+      data-region="顶部左侧"
+      style="left:76px;top:12px;width:61px;height:49px;--block-accent:#22c55e;"
+    >
+      <div class="ui-block__eyebrow">新增模块按钮</div>
+      <div class="ui-block__copy">新增模块按钮</div>
+    </div>
+    <!-- [区域 9] 模块示例1 · <div> · 顶部左侧 · 占画布宽 10% 高 9%
+         用途：被新增的模块预览,显示/锁定/复制/删除等按钮简约用图标显示就好不需要文本说明,模块需要可以被拖拽设置图层高度, -->
+    <div
+      class="ui-block block-9"
+      data-name="模块示例1"
+      data-region="顶部左侧"
+      style="left:-2px;top:75px;width:143px;height:82px;--block-accent:#22c55e;"
+    >
+      <div class="ui-block__eyebrow">模块示例1</div>
+      <div class="ui-block__copy">被新增的模块预览,显示/锁定/复制/删除等按钮简约用图标显示就好不需要文本说明,模块需要可以被拖拽设置图层高度,</div>
+    </div>
+    <!-- [区域 10] 分组功能示例模块-左侧栏 · <div> · 左侧 · 占画布宽 10% 高 8%
+         用途：需要新增分组嵌套功能,例如此模块既左侧栏模块,左侧栏模块做为一个父模块可以嵌套其他子模块,实现分组效果,如此一来当左侧栏嵌套过多子模块后可以设定一个下拉箭头按钮,展开收起子模块,当然子模块中也可以存在第二个父子嵌套关系,可以层层递进,子模块可显示嵌套路径来更直观感受 -->
+    <div
+      class="ui-block block-10"
+      data-name="分组功能示例模块-左侧栏"
+      data-region="左侧"
+      style="left:-2px;top:160px;width:145px;height:81px;--block-accent:#22c55e;"
+    >
+      <div class="ui-block__eyebrow">分组功能示例模块-左侧栏</div>
+      <div class="ui-block__copy">需要新增分组嵌套功能,例如此模块既左侧栏模块,左侧栏模块做为一个父模块可以嵌套其他子模块,实现分组效果,如此一来当左侧栏嵌套过多子模块后可以设定一个下拉箭头按钮,展开收起子模块,当然子模块中也可以存在第二个父子嵌套关系,可以层层递进,子模块可显示嵌套路径来更直观感受</div>
+    </div>
+    <!-- [区域 11] 子模块示例 · <div> · 左侧 · 占画布宽 10% 高 7%
+         用途：此模块做为子模块示例,可以被嵌套在左侧栏之内,实现分组效果,模块示例1提到的拖拽功能最好能和分组效果合并,如edge的分组效果类似,拖进来就是子模块,拖出去就是父模块的兄弟模块,两个兄弟模块拖拽过程中重合既合并为父子模块,被拖拽模块自动为子模块, -->
+    <div
+      class="ui-block block-11"
+      data-name="子模块示例"
+      data-region="左侧"
+      style="left:3px;top:243px;width:141px;height:70px;--block-accent:#22c55e;"
+    >
+      <div class="ui-block__eyebrow">子模块示例</div>
+      <div class="ui-block__copy">此模块做为子模块示例,可以被嵌套在左侧栏之内,实现分组效果,模块示例1提到的拖拽功能最好能和分组效果合并,如edge的分组效果类似,拖进来就是子模块,拖出去就是父模块的兄弟模块,两个兄弟模块拖拽过程中重合既合并为父子模块,被拖拽模块自动为子模块,</div>
+    </div>
+  </div>
+  <!-- [区域 12] 画布 · <div> · 中侧纵向通栏 · 占画布宽 78% 高 86%
+       用途：用于内容规划 -->
+  <div
+    class="ui-block block-12"
+    data-name="画布"
+    data-region="中侧纵向通栏"
+    style="left:153px;top:138px;width:1119px;height:827px;--block-accent:#22c55e;"
+  >
+    <div class="ui-block__eyebrow">画布</div>
+    <div class="ui-block__copy">用于内容规划</div>
+  </div>
+  <!-- [区域 13] 悬浮快捷工具栏 · <div> · 底部 · 占画布宽 77% 高 8%
+       用途：悬浮快捷工具栏 -->
+  <div
+    class="ui-block block-13"
+    data-name="悬浮快捷工具栏"
+    data-region="底部"
+    style="left:161px;top:856px;width:1110px;height:81px;--block-accent:#2175c4;"
+  >
+    <div class="ui-block__eyebrow">悬浮快捷工具栏</div>
+    <div class="ui-block__copy">悬浮快捷工具栏</div>
+  </div>
+  <!-- [区域 14] 右侧边栏 · <div> · 右侧 · 占画布宽 11% 高 84% · 含 1 个子区域
+       用途：模块属性编辑区,设置模块名称和描述等详细信息置顶或置底功能取消,右侧栏的显示顺序拖拽需要融合层级功能 -->
+  <div
+    class="ui-block block-14"
+    data-name="右侧边栏"
+    data-region="右侧"
+    style="left:1274px;top:140px;width:155px;height:808px;--block-accent:#22c55e;"
+  >
+    <div class="ui-block__eyebrow">右侧边栏</div>
+    <div class="ui-block__copy">模块属性编辑区,设置模块名称和描述等详细信息置顶或置底功能取消,右侧栏的显示顺序拖拽需要融合层级功能</div>
+    <!-- [区域 15] 实时预览模块 · <div> · 底部右侧 · 占画布宽 11% 高 13%
+         用途：统计,尺寸,体积等 然后直接显示预览,不需要复制代码和下载文件按钮,这个功能在顶部导航栏显示即可 -->
+    <div
+      class="ui-block block-15"
+      data-name="实时预览模块"
+      data-region="底部右侧"
+      style="left:1px;top:681px;width:160px;height:129px;--block-accent:#22c55e;"
+    >
+      <div class="ui-block__eyebrow">实时预览模块</div>
+      <div class="ui-block__copy">统计,尺寸,体积等
+然后直接显示预览,不需要复制代码和下载文件按钮,这个功能在顶部导航栏显示即可</div>
+    </div>
+  </div>
+  </div>
+</main>
+  </body>
+</html>

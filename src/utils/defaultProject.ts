@@ -1,0 +1,102 @@
+import { CanvasProject } from "@/types/planner";
+
+// 工厂函数而非常量：每次重置都生成新的时间戳。
+// 如果导出为模块级常量，createdAt/updatedAt 会被钉死在「首次 import 的那一刻」，
+// 调用 resetProject() 时恢复的是过期时间，而不是当前时间。
+export const createDefaultProject = (): CanvasProject => {
+  const now = new Date().toISOString();
+
+  return {
+    id: "project-ui-planner",
+    name: "增长页规划草案",
+    width: 1440,
+    height: 960,
+    createdAt: now,
+    updatedAt: now,
+    brief: "",
+    modules: [
+      {
+        id: "hero-section",
+        name: "Hero 首屏",
+        description: "放置品牌标题、价值主张、主行动按钮和辅助说明。",
+        semanticTag: "header",
+        x: 72,
+        y: 72,
+        width: 760,
+        height: 248,
+        zIndex: 1,
+        locked: false,
+        visible: true,
+        accent: "#4cc9f0",
+        parentId: null,
+        collapsed: false,
+      },
+      {
+        id: "feature-grid",
+        name: "功能亮点区",
+        description: "用 3 到 4 个卡片解释主要卖点，并强调收益。",
+        semanticTag: "section",
+        x: 72,
+        y: 372,
+        width: 860,
+        height: 248,
+        zIndex: 2,
+        locked: false,
+        visible: true,
+        accent: "#8b5cf6",
+        parentId: null,
+        collapsed: false,
+      },
+      // 下面两个卡片是「功能亮点区」的子模块，演示分组嵌套：
+      // 拖拽到父模块上即合并，导出时体现为 DOM 嵌套，图层栏体现为缩进。
+      {
+        id: "feature-card-1",
+        name: "卖点卡片 A",
+        description: "单个卖点：图标 + 标题 + 一句话说明。",
+        semanticTag: "div",
+        x: 96,
+        y: 420,
+        width: 240,
+        height: 160,
+        zIndex: 3,
+        locked: false,
+        visible: true,
+        accent: "#a78bfa",
+        parentId: "feature-grid",
+        collapsed: false,
+      },
+      {
+        id: "feature-card-2",
+        name: "卖点卡片 B",
+        description: "单个卖点：图标 + 标题 + 一句话说明。",
+        semanticTag: "div",
+        x: 360,
+        y: 420,
+        width: 240,
+        height: 160,
+        zIndex: 4,
+        locked: false,
+        visible: true,
+        accent: "#a78bfa",
+        parentId: "feature-grid",
+        collapsed: false,
+      },
+      {
+        id: "cta-panel",
+        name: "转化操作区",
+        description: "用于展示表单、预约按钮或下载入口，作为最终转化模块。",
+        semanticTag: "aside",
+        x: 980,
+        y: 180,
+        width: 320,
+        height: 440,
+        zIndex: 5,
+        locked: false,
+        visible: true,
+        accent: "#f59e0b",
+        parentId: null,
+        collapsed: false,
+      },
+    ],
+  };
+};

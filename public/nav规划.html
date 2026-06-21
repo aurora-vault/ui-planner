@@ -1,0 +1,193 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>nav规划 - UI 模板建议稿</title>
+    <style>
+:root {
+  color-scheme: dark;
+  --page-bg: #09111f;
+  --panel-bg: rgba(10, 18, 33, 0.82);
+  --panel-border: rgba(255, 255, 255, 0.12);
+  --text-strong: #f8fbff;
+  --text-soft: #91a4c2;
+}
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  min-height: 100vh;
+  font-family: 'Noto Sans SC', 'Segoe UI', sans-serif;
+  background:
+    radial-gradient(circle at top, rgba(76, 201, 240, 0.18), transparent 24%),
+    linear-gradient(180deg, #09111f 0%, #050a14 100%);
+  color: var(--text-strong);
+}
+.ui-template {
+  display: grid;
+  place-items: center;
+  min-height: 100vh;
+  padding: 40px;
+}
+.ui-template__canvas {
+  position: relative; width: 1440px; height: 960px;
+  border-radius: 28px;
+  border: 1px solid var(--panel-border);
+  background:
+    linear-gradient(rgba(255,255,255,0.04) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,0.04) 1px, transparent 1px),
+    var(--panel-bg);
+  background-size: 40px 40px, 40px 40px, cover;
+  overflow: hidden;
+}
+.ui-block {
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 16px;
+  border-radius: 20px;
+  border: 1px solid color-mix(in srgb, var(--block-accent) 45%, white 18%);
+  background: color-mix(in srgb, var(--block-accent) 12%, rgba(10, 18, 33, 0.88));
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.24);
+  overflow: hidden;
+}
+.ui-block__eyebrow {
+  font-size: 12px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--text-soft);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  flex: 0 0 auto;
+}
+.ui-block__copy {
+  font-size: 14px;
+  line-height: 1.7;
+  color: var(--text-strong);
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 4;
+  line-clamp: 4;
+  overflow: hidden;
+  min-height: 0;
+}
+    </style>
+  </head>
+  <body>
+<!--
+  ============================================================
+  nav规划 — UI 布局设计说明（DESIGN BRIEF）
+  ============================================================
+  这是一份「UI 规划稿」，描述各区域应有的位置、尺寸和用途。
+  阅读建议：先读本说明建立整体布局认知，再看下方 DOM 与 CSS 还原细节。
+  坐标系：画布左上角为原点 (0,0)，单位 px。缩进表示分组嵌套（子区域属于上一级父区域）。
+
+  画布尺寸：1440 × 960 px
+  区域总数：8
+
+  区域清单：
+    1. 导航栏  <nav>  —  中部横向通栏（宽 100% / 高 22%）
+    2. logo  <div>  —  左侧（宽 16% / 高 15%）
+          用途：用于ui设计,也就是本项目自身的展示
+    3. 标题/下拉说明  <div>  —  画布正中央（宽 25% / 高 11%）
+          用途：居中展示
+    4. 导出/下拉更多导出  <div>  —  右侧（宽 11% / 高 8%）
+          用途：导出时自动保存为同名项目
+    5. 保存  <div>  —  右侧（宽 7% / 高 8%）
+          用途：集成保存和保存云端
+    6. 复制代码  <div>  —  画布正中央（宽 7% / 高 8%）
+    7. 项目下拉列表  <div>  —  右侧（宽 7% / 高 6%）
+    8. 下拉列表  <div>  —  底部右侧（宽 7% / 高 18%）
+          用途：每个项目后面都带一个删除图标,供随时操作,
+  ============================================================
+-->
+<main class="ui-template" aria-label="nav规划">
+  <div class="ui-template__canvas">
+  <!-- [区域 1] 导航栏 · <nav> · 中部横向通栏 · 占画布宽 100% 高 22% · 含 7 个子区域 -->
+  <nav
+    class="ui-block block-1"
+    data-name="导航栏"
+    data-region="中部横向通栏"
+    style="left:2px;top:405px;width:1435px;height:213px;--block-accent:#f59e0b;"
+  >
+    <div class="ui-block__eyebrow">导航栏</div>
+    <!-- [区域 2] logo · <div> · 左侧 · 占画布宽 16% 高 15%
+         用途：用于ui设计,也就是本项目自身的展示 -->
+    <div
+      class="ui-block block-2"
+      data-name="logo"
+      data-region="左侧"
+      style="left:16px;top:44px;width:229px;height:141px;--block-accent:#22c55e;"
+    >
+      <div class="ui-block__eyebrow">logo</div>
+      <div class="ui-block__copy">用于ui设计,也就是本项目自身的展示</div>
+    </div>
+    <!-- [区域 3] 标题/下拉说明 · <div> · 画布正中央 · 占画布宽 25% 高 11%
+         用途：居中展示 -->
+    <div
+      class="ui-block block-3"
+      data-name="标题/下拉说明"
+      data-region="画布正中央"
+      style="left:519px;top:59px;width:360px;height:104px;--block-accent:#22c55e;"
+    >
+      <div class="ui-block__eyebrow">标题/下拉说明</div>
+      <div class="ui-block__copy">居中展示</div>
+    </div>
+    <!-- [区域 4] 导出/下拉更多导出 · <div> · 右侧 · 占画布宽 11% 高 8%
+         用途：导出时自动保存为同名项目 -->
+    <div
+      class="ui-block block-4"
+      data-name="导出/下拉更多导出"
+      data-region="右侧"
+      style="left:1244px;top:80px;width:164px;height:81px;--block-accent:#22c55e;"
+    >
+      <div class="ui-block__eyebrow">导出/下拉更多导出</div>
+      <div class="ui-block__copy">导出时自动保存为同名项目</div>
+    </div>
+    <!-- [区域 5] 保存 · <div> · 右侧 · 占画布宽 7% 高 8%
+         用途：集成保存和保存云端 -->
+    <div
+      class="ui-block block-5"
+      data-name="保存"
+      data-region="右侧"
+      style="left:1009px;top:83px;width:99px;height:76px;--block-accent:#22c55e;"
+    >
+      <div class="ui-block__eyebrow">保存</div>
+      <div class="ui-block__copy">集成保存和保存云端</div>
+    </div>
+    <!-- [区域 6] 复制代码 · <div> · 画布正中央 · 占画布宽 7% 高 8% -->
+    <div
+      class="ui-block block-6"
+      data-name="复制代码"
+      data-region="画布正中央"
+      style="left:904px;top:78px;width:100px;height:76px;--block-accent:#22c55e;"
+    >
+      <div class="ui-block__eyebrow">复制代码</div>
+    </div>
+    <!-- [区域 7] 项目下拉列表 · <div> · 右侧 · 占画布宽 7% 高 6% -->
+    <div
+      class="ui-block block-7"
+      data-name="项目下拉列表"
+      data-region="右侧"
+      style="left:1121px;top:90px;width:106px;height:58px;--block-accent:#22c55e;"
+    >
+      <div class="ui-block__eyebrow">项目下拉列表</div>
+    </div>
+    <!-- [区域 8] 下拉列表 · <div> · 底部右侧 · 占画布宽 7% 高 18%
+         用途：每个项目后面都带一个删除图标,供随时操作, -->
+    <div
+      class="ui-block block-8"
+      data-name="下拉列表"
+      data-region="底部右侧"
+      style="left:1124px;top:154px;width:106px;height:175px;--block-accent:#22c55e;"
+    >
+      <div class="ui-block__eyebrow">下拉列表</div>
+      <div class="ui-block__copy">每个项目后面都带一个删除图标,供随时操作,</div>
+    </div>
+  </nav>
+  </div>
+</main>
+  </body>
+</html>
