@@ -3,6 +3,7 @@ services:
     build:
       context: ../..
       dockerfile: Dockerfile
+    image: pxman/ui-planner:latest
     container_name: ui-planner
     restart: unless-stopped
     environment:
